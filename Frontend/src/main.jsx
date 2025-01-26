@@ -7,13 +7,11 @@ import AdminRoute from "./Components/Authentication/AdminRoute";
 import ErrorPage from "./ErrorPage";
 import Login from "./Components/Authentication/Login";
 import Root from "./Components/Root";
-import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 import AuthProvider from "./Components/Authentication/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./Components/Authentication/SignUp";
 import Home from "./Components/Pages/Home";
 import Profile from "./Components/Pages/Profile";
-import UserList from "./Components/Pages/UserList";
 
 const queryClient = new QueryClient();
 
