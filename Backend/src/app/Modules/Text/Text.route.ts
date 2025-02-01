@@ -3,14 +3,17 @@ import multer from 'multer';
 import path from 'path';
 import { TextControllers } from './Text.controller';
 
+
 const router = express.Router();
+
+const textsDirectory = path.join(process.cwd(), 'Texts/');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-    cb(null, 'Texts/');
+        cb(null, textsDirectory);
     },
     filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 

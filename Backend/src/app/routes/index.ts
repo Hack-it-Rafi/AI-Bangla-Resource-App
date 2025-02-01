@@ -18,7 +18,7 @@ const moduleRoutes = [
     route: ChatRoutes
   },
   {
-    path: '/speech',
+    path: '/mp3',
     route: SpeechRoutes
   },
   {

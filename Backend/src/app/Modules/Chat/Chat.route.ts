@@ -1,6 +1,5 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import auth from '../../middlewares/auth';
 import { ChatValidation } from './Chat.validation';
 import { ChatControllers } from './Chat.controller';
 

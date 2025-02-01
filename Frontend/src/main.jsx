@@ -9,7 +9,6 @@ import AuthProvider from "./Components/Authentication/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./Components/Authentication/SignUp";
 import Profile from "./Components/Pages/Profile";
-import RealHome from "./Components/Pages/RealHome";
 import AllHome from "./Components/Pages/AllHome";
 
 const queryClient = new QueryClient();

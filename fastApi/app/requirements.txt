@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+transformers
+torch
+torchaudio
+pandas
+apscheduler
+pydantic
+python-multipart
+accelerate>=0.26.0

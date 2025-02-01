@@ -10,7 +10,7 @@
         cb(null, 'Speeches/');
         },
         filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Ensure the correct file extension
+        cb(null, Date.now() + path.extname(file.originalname));
         }
     });
     

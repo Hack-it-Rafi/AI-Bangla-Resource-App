@@ -2,8 +2,8 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { Send, Upload, X, File, Sparkles, Trash2 } from "lucide-react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import TextToSpeech from "./TextToSpeech";
-import { use } from "react";
 import { AuthContext } from "../Authentication/AuthProvider";
+import axios from "axios";
 
 const Chatbot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -38,7 +38,7 @@ const Chatbot = () => {
   }, [chatHistory]);
 
   useEffect(() => {
-    axiosSecure
+    axios
       .get(`http://localhost:3000/api/v1/user?email=${user?.email}`)
       .then((res) => {
         setUser(res.data.data[0]);
@@ -184,24 +184,24 @@ const Chatbot = () => {
     }
   };
 
-  const dragChatWindow = (e) => {
-    const chatWindow = chatWindowRef.current;
-    const offsetX = e.clientX - chatWindow.offsetLeft;
-    const offsetY = e.clientY - chatWindow.offsetTop;
+  // const dragChatWindow = (e) => {
+  //   const chatWindow = chatWindowRef.current;
+  //   const offsetX = e.clientX - chatWindow.offsetLeft;
+  //   const offsetY = e.clientY - chatWindow.offsetTop;
 
-    const handleMouseMove = (moveEvent) => {
-      chatWindow.style.left = `${moveEvent.clientX - offsetX}px`;
-      chatWindow.style.top = `${moveEvent.clientY - offsetY}px`;
-    };
+  //   const handleMouseMove = (moveEvent) => {
+  //     chatWindow.style.left = `${moveEvent.clientX - offsetX}px`;
+  //     chatWindow.style.top = `${moveEvent.clientY - offsetY}px`;
+  //   };
 
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
+  //   const handleMouseUp = () => {
+  //     document.removeEventListener("mousemove", handleMouseMove);
+  //     document.removeEventListener("mouseup", handleMouseUp);
+  //   };
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  };
+  //   document.addEventListener("mousemove", handleMouseMove);
+  //   document.addEventListener("mouseup", handleMouseUp);
+  // };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 sm:bottom-8 sm:right-8">

@@ -1,4 +1,3 @@
-import httpStatus from 'http-status';
 import sendResponse from '../../utils/sendResponse';
 import catchAsync from '../../utils/catchAsync';
 import { RequestHandler } from 'express';
@@ -11,7 +10,7 @@ const createVideo = catchAsync(async (req, res) => {
   const result = await VideoServices.createVideoIntoDB(VideoData);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 200,
     success: true,
     message: 'Video is created successfully',
     data: result,
@@ -22,7 +21,7 @@ const getAllVideos: RequestHandler = catchAsync(async (req, res) => {
   const result = await VideoServices.getAllVideosFromDB(req.query);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 200,
     success: true,
     message: 'Videos are retrieved successfully',
     data: result,
@@ -34,7 +33,7 @@ const getSingleVideo = catchAsync(async (req, res) => {
   const result = await VideoServices.getSingleVideoFromDB(id);
 
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 200,
     success: true,
     message: 'Video is retrieved successfully',
     data: result,
@@ -57,5 +56,5 @@ export const VideoControllers = {
   createVideo,
   getAllVideos,
   getSingleVideo,
-  getVideoFile
+  getVideoFile,
 };

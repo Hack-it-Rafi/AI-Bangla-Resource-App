@@ -1,5 +1,4 @@
 import { useState } from "react";
-import HomeOutput from "./HomeOutput";
 import axios from "axios";
 
 const RealHome = () => {
@@ -21,8 +20,13 @@ const RealHome = () => {
       formData.append("file", file);
 
       try {
-        const response = await axios.post(`http://localhost:3000/api/v1/${fileType}/add-file`, formData);
-        setOutput(response.data);
+        const response = await axios.post(
+          `http://localhost:3000/api/v1/${fileType}/add-file`,
+          formData
+        );
+        setOutput(
+          response.data.data.translatedContent
+        );
         console.log(response.data);
       } catch (error) {
         console.error("Error:", error);
@@ -39,8 +43,14 @@ const RealHome = () => {
     formData.append("file", blob, "textfile.txt");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/text/add-file", formData);
-      setOutput(response.data);
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/text/add-file",
+        formData
+      );
+      setOutput(
+        response.data.data.translatedContent.response.candidates[0].content
+          .parts[0].text
+      );
       console.log(response.data);
     } catch (error) {
       console.error("Error:", error);
@@ -126,9 +136,9 @@ const RealHome = () => {
         </div>
       </div>
       <div className="mockup-window bg-[#A64D79] border">
-        <div className="bg-black flex justify-center h-[700px] px-4 py-16">
+        <div className="bg-black h-[700px] px-4 py-5 overflow-auto">
           {output ? (
-            <HomeOutput output={output} />
+            <pre className="text-white whitespace-pre-wrap">{output}</pre>
           ) : (
             <div className="text-white">Output will be displayed here...</div>
           )}
