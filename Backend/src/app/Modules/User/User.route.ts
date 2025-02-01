@@ -13,19 +13,21 @@ router.post(
 );
 
 router.get('/:id',
-   auth('admin', 'user'), 
+  //  auth('admin', 'user'), 
 UserControllers.getSingleUser);
 
 router.get('/', 
-  auth('admin','user'),
+  // auth('admin','user'),
  UserControllers.getAllUsers);
 
 router.patch(
   '/:userId',
-  auth(),
+  // auth(),
   UserControllers.updateUser,
 );
 
-router.delete('/:userId', auth('admin'), UserControllers.deleteUser);
+router.delete('/:userId',
+  //  auth('admin'), 
+   UserControllers.deleteUser);
 
 export const UserRoutes = router;

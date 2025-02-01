@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { TPdf } from './Pdf.interface';
+import { TVideo } from './Video.interface';
 
-const pdfSchema = new Schema<TPdf>(
+const videoSchema = new Schema<TVideo>(
   {
     // name: {
     //   type: String,
@@ -21,4 +21,4 @@ const pdfSchema = new Schema<TPdf>(
   },
 );
 
-export const Pdf = model<TPdf>('Pdf', pdfSchema);
+export const Video = model<TVideo>('Video', videoSchema);

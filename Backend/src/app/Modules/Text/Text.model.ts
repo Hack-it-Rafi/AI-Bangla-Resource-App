@@ -3,14 +3,14 @@ import { TText } from './Text.interface';
 
 const textSchema = new Schema<TText>(
   {
-    name: {
-      type: String,
-    },
-    userId: {
-      type: Schema.Types.ObjectId,
-      unique: false,
-      ref: 'User',
-    },
+    // name: {
+    //   type: String,
+    // },
+    // userId: {
+    //   type: Schema.Types.ObjectId,
+    //   unique: false,
+    //   ref: 'User',
+    // },
     fileUrl: {
       type: String,
       required: true,

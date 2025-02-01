@@ -2,16 +2,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import PrivateRoute from "./Components/Authentication/PrivateRoute";
-import AdminRoute from "./Components/Authentication/AdminRoute";
 import ErrorPage from "./ErrorPage";
 import Login from "./Components/Authentication/Login";
 import Root from "./Components/Root";
 import AuthProvider from "./Components/Authentication/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./Components/Authentication/SignUp";
-import Home from "./Components/Pages/Home";
 import Profile from "./Components/Pages/Profile";
+import RealHome from "./Components/Pages/RealHome";
+import AllHome from "./Components/Pages/AllHome";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +24,7 @@ const router = createBrowserRouter([
         path: "/",
         element: (
           // <PrivateRoute>
-            <Home></Home>
+            <AllHome></AllHome>
           // </PrivateRoute>
         ),
       },

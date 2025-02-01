@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Authentication/AuthProvider";
 import logo from "/Logo.png";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
-import useAdmin from "../Hooks/useAdmin";
+import axios from "axios";
 
 const ModifiedNavbar = () => {
   const location = useLocation();
@@ -13,7 +13,7 @@ const ModifiedNavbar = () => {
   const { user, logOut } = useContext(AuthContext);
 
   useEffect(() => {
-    axiosSecure
+    axios
         .get(`http://localhost:3000/api/v1/user?email=${user?.email}`)
         .then((res) => {
             setUser(res.data.data[0]);
@@ -51,7 +51,7 @@ const ModifiedNavbar = () => {
 
   return (
     <div className={`px-8 w-full`}>
-      <div className="navbar max-w-7xl mx-auto">
+      <div className="navbar">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -72,7 +72,7 @@ const ModifiedNavbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="text-white menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               {navLinks}
             </ul>
@@ -85,7 +85,7 @@ const ModifiedNavbar = () => {
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+          <ul className="text-white menu menu-horizontal px-1">{navLinks}</ul>
         </div>
         <div className="navbar-end gap-4">
           {location.pathname != "/login" ? (
@@ -102,7 +102,7 @@ const ModifiedNavbar = () => {
               </>
             ) : (
               <Link to="/login">
-                <button className="btn z">Log In</button>
+                <button className="btn bg-[#6A1E55] text-white border-none hover:bg-[#a12e81] z">Log In</button>
               </Link>
             )
           ) : null}

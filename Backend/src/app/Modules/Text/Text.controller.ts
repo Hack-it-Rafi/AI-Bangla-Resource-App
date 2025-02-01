@@ -4,7 +4,6 @@ import catchAsync from '../../utils/catchAsync';
 import { RequestHandler } from 'express';
 import fs from 'fs';
 // import path from 'path';
-import mime from 'mime';
 import { TextServices } from './Text.service';
 
 const createText = catchAsync(async (req, res) => {
@@ -51,14 +50,7 @@ const getTextFile = catchAsync(async (req, res) => {
     return res.status(404).send('Text not found');
   }
 
-  //   res.contentType('file/*');
-  const contentType = mime.getType(text.fileUrl);
-
-  if (!contentType) {
-    return res.status(500).send('Could not determine file type');
-  }
-
-  res.contentType(contentType);
+  res.contentType('application/txt');
   fs.createReadStream(text.fileUrl).pipe(res);
 });
 

@@ -1,160 +1,62 @@
-// import httpStatus from 'http-status';
-import fs from 'fs';
-import path from 'path';
-import config from '../../config';
-import catchAsync from '../../utils/catchAsync';
+import httpStatus from 'http-status';
 import sendResponse from '../../utils/sendResponse';
-import { PDFServices } from './Pdf.service';
-import { getObjectFromMinIO, uploadToMinIO } from './Pdf.utility';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import jsPDF from 'jspdf';
-import { Buffer } from 'buffer';
-// import fontBengali from './NotoSansBengali-Regular-normal';
-import fontBengali from '../../utils/NotoSansBengali-Regular-normal'
-import { pdfSearchableFields } from './Pdf.constant';
+import catchAsync from '../../utils/catchAsync';
+import { RequestHandler } from 'express';
+import fs from 'fs';
+// import path from 'path';
+import { PdfServices } from './Pdf.service';
 
-const bucketName = 'stackoverflow-files';
-
-const getCaption = async (content) => {
-  const genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-  const enhancedPrompt = `The following text is written in Bangla. Write a caption in 3-4 words and provide your response strictly in Bangla:
-         "${content}"`;
-  const result = await model.generateContent(enhancedPrompt);
-
-  return result;
-};
-
-const getTranslation = async (content) => {
-  const genAI = new GoogleGenerativeAI(config.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-  const enhancedPrompt = `
-        The following text is written in Banglish. Convert it to Bangla and provide your response strictly in Bangla:
-         "${content}"
-        `;
-
-  const result = await model.generateContent(enhancedPrompt);
-
-  return result;
-};
-
-const generatePdfFromContent = async (geminiTranslation) => {
-    // Create a new jsPDF instance
-    const pdf = new jsPDF();
-  
-    // Add the custom font to jsPDF
-    pdf.addFileToVFS("NotoSansBengali-Regular.ttf", fontBengali);
-    pdf.addFont("NotoSansBengali-Regular.ttf", "NotoSansBengali", "normal");
-  
-    // Set the font to the Bangla font
-    pdf.setFont("NotoSansBengali");
-  
-    // Set font size
-    pdf.setFontSize(12);
-  
-    // Add the translated content (Bangla text) to the PDF
-    pdf.text(geminiTranslation, 10, 10, { maxWidth: 180 });
-  
-    // Generate the PDF as a Blob
-    const pdfBlob = pdf.output('blob');
-  
-    // Convert the Blob to a Buffer
-    const buffer = Buffer.from(await pdfBlob.arrayBuffer());
-    
-    return buffer;
-  };
-
-const createPDF = catchAsync(async (req, res) => {
-    const { content } = req.body;
-  
-    // Create a temporary file path relative to the current working directory
-    const tempFilePath = path.join(process.cwd(), `${Date.now()}_temp.pdf`);
-    try {
-      const translatedContent = await getTranslation(content);
-    //   console.log(translatedContent?.response?.candidates[0].content.parts[0].text);
-      let caption = await getCaption(content);
-      caption = caption?.response?.candidates[0].content.parts[0].text;
-    //   console.log(caption);
-      const pdfBuffer = await generatePdfFromContent(translatedContent?.response?.candidates[0].content.parts[0].text);
-
-  
-      await fs.promises.writeFile(tempFilePath, pdfBuffer);
-  
-      const file = {
-        path: tempFilePath,
-        originalname: `${Date.now()}_translated.pdf`,
-        buffer: pdfBuffer,
-        size: Buffer.byteLength(pdfBuffer),
-      };
-
-    //   console.log(file);
-  
-      await uploadToMinIO(bucketName, file);
-  
-      const fileUrl = `/${bucketName}/${file.originalname}`;
-  
-      const PDFData = {
-        ...req.body,
-        translatedContent: translatedContent?.response?.candidates[0].content.parts[0].text,
-        caption,
-        fileUrl,
-      };
-  
-      const result = await PDFServices.createPDFIntoDB(PDFData);
-  
-      sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: 'PDF is created successfully',
-        data: result,
-      });
-    }
-    finally {
-      // Ensure the temporary file is deleted
-      if (fs.existsSync(tempFilePath)) {
-        await fs.promises.unlink(tempFilePath);
-      }
-    }
-  });
-
-const getAllPDFs = catchAsync(async (req, res) => {
-  const result = await PDFServices.getAllPDFsFromDB(req.query);
+const createPdf = catchAsync(async (req, res) => {
+  const fileData = req.file ? { fileUrl: req.file.path } : {};
+  const PdfData = { ...req.body, ...fileData };
+  const result = await PdfServices.createPdfIntoDB(PdfData);
 
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: httpStatus.OK,
     success: true,
-    message: 'PDFs are retrieved successfully',
+    message: 'Pdf is created successfully',
     data: result,
   });
 });
 
-const getSinglePDF = catchAsync(async (req, res) => {
+const getAllPdfs: RequestHandler = catchAsync(async (req, res) => {
+  const result = await PdfServices.getAllPdfsFromDB(req.query);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Pdfs are retrieved successfully',
+    data: result,
+  });
+});
+
+const getSinglePdf = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await PDFServices.getSinglePDFFromDB(id);
+  const result = await PdfServices.getSinglePdfFromDB(id);
 
   sendResponse(res, {
-    statusCode: 200,
+    statusCode: httpStatus.OK,
     success: true,
-    message: 'PDF is retrieved successfully',
+    message: 'Pdf is retrieved successfully',
     data: result,
   });
 });
 
-const getPDFFile = catchAsync(async (req, res) => {
-  const { fileName } = req.params;
-  try {
-    const content = await getObjectFromMinIO(bucketName, fileName);
-    res.status(200).json({ filename: fileName, content: content });
-  } catch (error) {
-    res.status(500).json({ message: 'Could not retrieve file.', error });
+const getPdfFile = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const pdf = await PdfServices.getSinglePdfFromDB(id);
+
+  if (!pdf || !pdf.fileUrl) {
+    return res.status(404).send('Pdf not found');
   }
+
+  res.contentType('application/pdf');
+  fs.createReadStream(pdf.fileUrl).pipe(res);
 });
 
-export const PDFControllers = {
-  createPDF,
-  getSinglePDF,
-  getAllPDFs,
-  getPDFFile,
+export const PdfControllers = {
+  createPdf,
+  getAllPdfs,
+  getSinglePdf,
+  getPdfFile
 };

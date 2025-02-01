@@ -30,7 +30,7 @@ const Home = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-10">
+        <div className="max-w-7xl mx-auto px-4">
             <Tabs defaultFocus={true}>
                 <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
                     <TabList className="flex space-x-4 overflow-x-auto pb-2">

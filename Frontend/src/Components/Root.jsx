@@ -8,11 +8,11 @@ const Root = () => {
   // const homePage = location.pathname.includes('home');
   // const loginPage = location.pathname.includes('login');
   return (
-    <div className="bg-[#F3F3E6] min-h-screen">
-      <div className=" max-w-7xl mx-auto">
+    <div className="bg-[#000000] min-h-screen">
+      <div className="px-20">
         <ModifiedNavbar></ModifiedNavbar>
         <Outlet></Outlet>
-      <Chatbot></Chatbot>
+      {/* <Chatbot></Chatbot> */}
     </div>
     </div>
   );

@@ -3,14 +3,14 @@ import { TSpeech } from './Speech.interface';
 
 const speechSchema = new Schema<TSpeech>(
   {
-    name: {
-      type: String,
-    },
-    userId: {
-      type: Schema.Types.ObjectId,
-      unique: false,
-      ref: 'User',
-    },
+    // name: {
+    //   type: String,
+    // },
+    // userId: {
+    //   type: Schema.Types.ObjectId,
+    //   unique: false,
+    //   ref: 'User',
+    // },
     fileUrl: {
       type: String,
       required: true,
