@@ -11,6 +11,7 @@ import SignUp from "./Components/Authentication/SignUp";
 import Profile from "./Components/Pages/Profile";
 import AllHome from "./Components/Pages/AllHome";
 import Start from "./Components/Pages/Start";
+import PrivateRoute from "./Components/Authentication/PrivateRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,9 +24,9 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: (
-          // <PrivateRoute>
+          <PrivateRoute>
           <AllHome></AllHome>
-          // </PrivateRoute>
+          </PrivateRoute>
         ),
       },
       {

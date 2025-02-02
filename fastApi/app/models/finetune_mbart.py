@@ -16,7 +16,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("../training/combined_data.txt", sep="\t", names=["Text", "Gloss"])
+df = pd.read_csv("../training/translation_2.txt", sep="\t", names=["Text", "Gloss"])
 df.dropna(inplace=True)
 
 train_df, test_df = train_test_split(df, test_size=0.1, random_state=103)
@@ -138,6 +138,3 @@ for key in metrics_list[0].keys():
         final_metrics[key] = np.mean(values)
     else:
         final_metrics[key] = None
-
-# Print final results
-print_metrics(final_metrics)
