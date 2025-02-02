@@ -25,7 +25,7 @@ class TranslationDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        source_text = self.data.iloc[idx]['banglish']
+        source_text = self.data.iloc[idx]['english']
         target_text = self.data.iloc[idx]['bangla']
         inputs = self.tokenizer(source_text, truncation=True, max_length=self.max_length, padding='max_length', return_tensors="pt")
         labels = self.tokenizer(target_text, truncation=True, max_length=self.max_length, padding='max_length', return_tensors="pt").input_ids
@@ -41,7 +41,7 @@ def fine_tune_model(csv_path, model_name="t5-small", save_path="app/training/sav
 
         training_args = TrainingArguments(
             output_dir=save_path,
-            per_device_train_batch_size=4,  # Reduce batch size for lightweight training
+            per_device_train_batch_size=4, 
             num_train_epochs=3,
             save_steps=10,
             save_total_limit=2,
@@ -81,14 +81,14 @@ async def upload_csv(file: UploadFile = File(...)):
 
     # Merge uploaded file into combined_data.csv
     uploaded_df = pd.read_csv(file_location)
-    combined_csv = "app/training/combined_data.csv"
-    if os.path.exists(combined_csv):
-        existing_df = pd.read_csv(combined_csv)
+    combined_data = "app/training/combined_data.txt"
+    if os.path.exists(combined_data):
+        existing_df = pd.read_csv(combined_data)
         final_df = pd.concat([existing_df, uploaded_df], ignore_index=True)
     else:
         final_df = uploaded_df
 
-    final_df.to_csv(combined_csv, index=False)
+    final_df.to_csv(combined_data, index=False)
     return {"status": "File uploaded and combined successfully"}
 
 @training_router.post("/train/")

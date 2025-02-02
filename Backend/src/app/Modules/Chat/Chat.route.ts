@@ -13,7 +13,6 @@ router.post(
   '/get-chat-response',
   // auth('admin', 'user'),
   // upload.single('file'), // Specify the field name to be 'file'
-  validateRequest(ChatValidation.addChatSchema),
   ChatControllers.chatResponse,
 );
 

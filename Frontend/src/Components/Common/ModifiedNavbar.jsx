@@ -14,14 +14,14 @@ const ModifiedNavbar = () => {
 
   useEffect(() => {
     axios
-        .get(`http://localhost:3000/api/v1/user?email=${user?.email}`)
-        .then((res) => {
-            setUser(res.data.data[0]);
-        })
-        .catch((err) => {
-            console.error("Failed to fetch user data:", err);
-        });
-}, [axiosSecure, user]);
+      .get(`http://localhost:3000/api/v1/user?email=${user?.email}`)
+      .then((res) => {
+        setUser(res.data.data[0]);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch user data:", err);
+      });
+  }, [axiosSecure, user]);
 
   const handleLogOut = () => {
     logOut().then().catch();
@@ -30,23 +30,24 @@ const ModifiedNavbar = () => {
   const navLinks = (
     <>
       <li className="mr-10">
-        <Link to="/">All PDFs</Link>
+        <Link to="/root/home">All PDFs</Link>
       </li>
       <li className="mr-10">
-        <Link to="/users">Users</Link>
+        <Link to="/root/users">Users</Link>
       </li>
-      {
-        dbuser?.role =='admin' ? (
-          <li className="mr-1">
-            <Link to="/adminDashboard">Admin Dashboard</Link>
-          </li>
-        ) : null
-      }
+      {dbuser?.role == "admin" ? (
+        <li className="mr-1">
+          <Link to="/adminDashboard">Admin Dashboard</Link>
+        </li>
+      ) : null}
     </>
   );
 
   const handleRedirect = () => {
     navigate(`/profile/${dbuser._id}`);
+  };
+  const handleRedirectToStart = () => {
+    navigate(`/`);
   };
 
   return (
@@ -77,10 +78,13 @@ const ModifiedNavbar = () => {
               {navLinks}
             </ul>
           </div>
-          <div className="hidden md:flex items-center ">
+          <div
+            onClick={handleRedirectToStart}
+            className="hidden md:flex items-center "
+          >
             <img className="w-28" src={logo} alt="" />
             {/* <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-400 via-orange-300 to-orange-400 inline-block text-transparent bg-clip-text">
-              BanglishVerse
+              englishVerse
             </h1> */}
           </div>
         </div>
@@ -91,7 +95,11 @@ const ModifiedNavbar = () => {
           {location.pathname != "/login" ? (
             user ? (
               <>
-                <label onClick={handleRedirect} tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <label
+                  onClick={handleRedirect}
+                  tabIndex={0}
+                  className="btn btn-ghost btn-circle avatar"
+                >
                   <div className="w-10 rounded-full">
                     <img src={user?.photoURL} alt="photo" />
                   </div>
@@ -102,7 +110,9 @@ const ModifiedNavbar = () => {
               </>
             ) : (
               <Link to="/login">
-                <button className="btn bg-[#6A1E55] text-white border-none hover:bg-[#a12e81] z">Log In</button>
+                <button className="btn bg-[#6A1E55] text-white border-none hover:bg-[#a12e81] z">
+                  Log In
+                </button>
               </Link>
             )
           ) : null}

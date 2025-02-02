@@ -2,7 +2,7 @@ from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 import torch
 
 # Load the pre-trained model and tokenizer
-model_name = "Mdkaif2782/banglish-to-bangla"
+model_name = "shhossain/opus-mt-en-to-bn"
 tokenizer = MBart50TokenizerFast.from_pretrained(model_name)
 model = MBartForConditionalGeneration.from_pretrained(model_name)
 
@@ -10,17 +10,17 @@ model = MBartForConditionalGeneration.from_pretrained(model_name)
 if torch.cuda.is_available():
     model = model.cuda()
 
-def translate_banglish_to_bangla(banglish_input: str) -> str:
+def translate_english_to_bangla(english_input: str) -> str:
     """
-    Translates Banglish text to Bangla using the Hugging Face model.
+    Translates the text to Bangla using the Hugging Face model.
 
     Args:
-        banglish_input (str): The Banglish input text.
+        english_input (str): The input text.
 
     Returns:
         str: The translated Bangla text.
     """
-    inputs = tokenizer(banglish_input, return_tensors="pt", padding=True, truncation=True, max_length=128)
+    inputs = tokenizer(english_input, return_tensors="pt", padding=True, truncation=True, max_length=128)
     if torch.cuda.is_available():
         inputs = {key: value.cuda() for key, value in inputs.items()}
 

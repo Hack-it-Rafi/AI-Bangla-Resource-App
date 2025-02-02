@@ -10,40 +10,48 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SignUp from "./Components/Authentication/SignUp";
 import Profile from "./Components/Pages/Profile";
 import AllHome from "./Components/Pages/AllHome";
+import Start from "./Components/Pages/Start";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/root",
     element: <Root></Root>,
     errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
-        path: "/",
+        path: "home",
         element: (
           // <PrivateRoute>
-            <AllHome></AllHome>
+          <AllHome></AllHome>
           // </PrivateRoute>
         ),
-      },
-      {
-        path: "login",
-        element: <Login></Login>,
-      },
-      {
-        path: "signup",
-        element: <SignUp></SignUp>,
       },
       {
         path: "profile/:id",
         element: (
           // <PrivateRoute>
-            <Profile></Profile>
+          <Profile></Profile>
           // </PrivateRoute>
         ),
       },
     ],
+  },
+  {
+    path: "login",
+    element: <Login></Login>,
+  },
+  {
+    path: "signup",
+    element: <SignUp></SignUp>,
+  },
+  {
+    path: "/",
+    element: (
+      <Start></Start>
+    ),
+    errorElement: <ErrorPage></ErrorPage>,
   },
 ]);
 

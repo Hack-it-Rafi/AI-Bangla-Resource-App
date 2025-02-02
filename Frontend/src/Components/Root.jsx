@@ -12,7 +12,7 @@ const Root = () => {
       <div className="px-20">
         <ModifiedNavbar></ModifiedNavbar>
         <Outlet></Outlet>
-      {/* <Chatbot></Chatbot> */}
+      <Chatbot></Chatbot>
     </div>
     </div>
   );
